@@ -1,4 +1,5 @@
 import 'dart:ffi';
+import 'dart:ui';
 
 import 'package:english_words/english_words.dart';
 import 'package:flutter/material.dart';
@@ -45,13 +46,15 @@ class _SwitchListState extends State<SwitchList> {
     SwitchItemModel('Office', false, Icons.laptop_mac_outlined),
     SwitchItemModel('Dining Room', false, Icons.local_dining_outlined),
   ];
+  //late final List<String> names=[];
 
-  void _handleTap(int index, bool isOn) {
+/*  void _handleTap(int index, bool isOn) {
     setState(() {
       isOn = !isOn;
     });
-  }
+  }*/
 
+  final List<String> names=[];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -60,7 +63,7 @@ class _SwitchListState extends State<SwitchList> {
           mainAxisSize: MainAxisSize.min,
           children: [
             SizedBox(
-              height: 200,
+              height: 150,
               child: ListView.builder(
                 scrollDirection: Axis.horizontal,
                 itemCount: switchItems.length,
@@ -70,7 +73,18 @@ class _SwitchListState extends State<SwitchList> {
                     onTap: () {
                       setState(() {
                         // Toggle light when tapped.
-                        switchItem.isOn = !switchItem.isOn;
+                        switchItem.isOn = !switchItem.isOn;   // Toggle light when tapped.
+                        if(switchItem.isOn){
+                          switchItem.isOn = true;
+                        }else{
+                          switchItem.isOn = false;
+                        }
+
+                        if(switchItem.isOn){
+                          names.add(switchItem.name);
+                        }else{
+                          names.removeAt(names.indexOf(switchItem.name));
+                        }
                       });
                     },
                     child: Container(
@@ -84,6 +98,24 @@ class _SwitchListState extends State<SwitchList> {
                       height: 100,
                       width: 100,
                     ),
+                  );
+                },
+              ),
+            ),
+
+            SizedBox(
+              height: 500,
+              child: ListView.builder(
+                scrollDirection: Axis.vertical,
+                itemCount: names.length,
+                itemBuilder: (context, index) {
+                  return Container(
+                    child: Center(
+                        child:
+                        Text (names.isNotEmpty? names[index]:"")
+                    ),
+                    height: 100,
+                    width: 100,
                   );
                 },
               ),
